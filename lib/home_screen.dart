@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_library/to_read_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,9 +11,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List<Widget> pages = [
-    Center(
-      child: Text("Okunacak Kitaplar"),
-    ),
+    ToReadScreen(),
     Center(
       child: Text("Kütüphane"),
     ),

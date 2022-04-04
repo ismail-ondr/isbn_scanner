@@ -14,59 +14,121 @@
 14    <uses-permission android:name="android.permission.INTERNET" />
 14-->C:\Users\onder\Documents\GitHub\isbn_scanner\android\app\src\debug\AndroidManifest.xml:6:5-66
 14-->C:\Users\onder\Documents\GitHub\isbn_scanner\android\app\src\debug\AndroidManifest.xml:6:22-64
-15
-16    <application
-17        android:name="android.app.Application"
-18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-18-->[androidx.core:core:1.6.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\122df2e57d294d1a53db26bbc3b813c1\core-1.6.0\AndroidManifest.xml:24:18-86
-19        android:debuggable="true"
-20        android:icon="@mipmap/ic_launcher"
-21        android:label="my_library" >
-22        <activity
-23            android:name="com.example.my_library.MainActivity"
-24            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-25            android:exported="true"
-26            android:hardwareAccelerated="true"
-27            android:launchMode="singleTop"
-28            android:theme="@style/LaunchTheme"
-29            android:windowSoftInputMode="adjustResize" >
-30
-31            <!--
-32                 Specifies an Android theme to apply to this Activity as soon as
-33                 the Android process has started. This theme is visible to the user
-34                 while the Flutter UI initializes. After that, this theme continues
-35                 to determine the Window background behind the Flutter UI.
-36            -->
-37            <meta-data
-38                android:name="io.flutter.embedding.android.NormalTheme"
-39                android:resource="@style/NormalTheme" />
-40
-41            <intent-filter>
-42                <action android:name="android.intent.action.MAIN" />
-43
-44                <category android:name="android.intent.category.LAUNCHER" />
-45            </intent-filter>
-46        </activity>
-47        <!--
-48             Don't delete the meta-data below.
-49             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-50        -->
-51        <meta-data
-52            android:name="flutterEmbedding"
-53            android:value="2" />
-54
-55        <uses-library
-55-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
-56            android:name="androidx.window.extensions"
-56-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
-57            android:required="false" />
-57-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
-58        <uses-library
-58-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
-59            android:name="androidx.window.sidecar"
-59-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
-60            android:required="false" />
-60-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
-61    </application>
-62
-63</manifest>
+15    <uses-permission android:name="android.permission.CAMERA" />
+15-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-65
+15-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-62
+16
+17    <uses-feature android:name="android.hardware.camera" />
+17-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-60
+17-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:11:19-57
+18
+19    <uses-permission android:name="android.permission.FLASHLIGHT" />
+19-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:13:5-69
+19-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:13:22-66
+20
+21    <application
+22        android:name="android.app.Application"
+23        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+23-->[androidx.core:core:1.6.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\122df2e57d294d1a53db26bbc3b813c1\core-1.6.0\AndroidManifest.xml:24:18-86
+24        android:debuggable="true"
+25        android:icon="@mipmap/ic_launcher"
+26        android:label="my_library"
+27        android:largeHeap="true"
+27-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-33
+28        android:theme="@style/Theme.AppCompat.NoActionBar" >
+28-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-59
+29        <activity
+30            android:name="com.example.my_library.MainActivity"
+31            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+32            android:exported="true"
+33            android:hardwareAccelerated="true"
+34            android:launchMode="singleTop"
+35            android:theme="@style/LaunchTheme"
+36            android:windowSoftInputMode="adjustResize" >
+37
+38            <!--
+39                 Specifies an Android theme to apply to this Activity as soon as
+40                 the Android process has started. This theme is visible to the user
+41                 while the Flutter UI initializes. After that, this theme continues
+42                 to determine the Window background behind the Flutter UI.
+43            -->
+44            <meta-data
+45                android:name="io.flutter.embedding.android.NormalTheme"
+46                android:resource="@style/NormalTheme" />
+47
+48            <intent-filter>
+49                <action android:name="android.intent.action.MAIN" />
+50
+51                <category android:name="android.intent.category.LAUNCHER" />
+52            </intent-filter>
+53        </activity>
+54        <!--
+55             Don't delete the meta-data below.
+56             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+57        -->
+58        <meta-data
+59            android:name="flutterEmbedding"
+60            android:value="2" />
+61
+62        <activity android:name="com.amolg.flutterbarcodescanner.BarcodeCaptureActivity" />
+62-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:18:9-91
+62-->[:flutter_barcode_scanner] C:\Users\onder\Documents\GitHub\isbn_scanner\build\flutter_barcode_scanner\intermediates\library_manifest\debug\AndroidManifest.xml:18:19-88
+63
+64        <provider
+64-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+65            android:name="io.flutter.plugins.share.ShareFileProvider"
+65-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-70
+66            android:authorities="com.example.my_library.flutter.share_provider"
+66-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
+67            android:exported="false"
+67-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+68            android:grantUriPermissions="true" >
+68-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+69            <meta-data
+69-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:68
+70                android:name="android.support.FILE_PROVIDER_PATHS"
+70-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+71                android:resource="@xml/flutter_share_file_paths" />
+71-->[:share] C:\Users\onder\Documents\GitHub\isbn_scanner\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-65
+72        </provider>
+73
+74        <activity
+74-->[:url_launcher_android] C:\Users\onder\Documents\GitHub\isbn_scanner\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+75            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+75-->[:url_launcher_android] C:\Users\onder\Documents\GitHub\isbn_scanner\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+76            android:exported="false"
+76-->[:url_launcher_android] C:\Users\onder\Documents\GitHub\isbn_scanner\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+77            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+77-->[:url_launcher_android] C:\Users\onder\Documents\GitHub\isbn_scanner\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+78
+79        <uses-library
+79-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+80            android:name="androidx.window.extensions"
+80-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+81            android:required="false" />
+81-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+82        <uses-library
+82-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+83            android:name="androidx.window.sidecar"
+83-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+84            android:required="false" />
+84-->[androidx.window:window:1.0.0-beta04] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\03c633e46d75bfb21f082f0417f55161\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+85
+86        <activity
+86-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:23:9-26:75
+87            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+87-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:24:13-79
+88            android:exported="false"
+88-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:25:13-37
+89            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+89-->[com.google.android.gms:play-services-base:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\be2893cfe613ec180e65ae7f6f2e6367\jetified-play-services-base-17.4.0\AndroidManifest.xml:26:13-72
+90
+91        <meta-data
+91-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:23:9-25:69
+92            android:name="com.google.android.gms.version"
+92-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:24:13-58
+93            android:value="@integer/google_play_services_version" />
+93-->[com.google.android.gms:play-services-basement:17.4.0] C:\Users\onder\.gradle\caches\transforms-2\files-2.1\398f53a7f9527407294478b1e6516b93\jetified-play-services-basement-17.4.0\AndroidManifest.xml:25:13-66
+94    </application>
+95
+96</manifest>
