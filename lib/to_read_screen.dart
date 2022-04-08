@@ -92,92 +92,103 @@ class ToReadScreen extends ConsumerWidget {
         const SizedBox(height: 8),
         Expanded(
           child: ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             itemCount: books.length,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final book = books.reversed.toList()[index];
 
-              return InkWell(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BookDetailsScreen(
-                      isbn: book.isbn,
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.green[200],
+                ),
+                child: InkWell(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BookDetailsScreen(
+                        isbn: book.isbn,
+                      ),
                     ),
                   ),
-                ),
-                child: SizedBox(
-                  height: 112,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Image.network(
-                          book.coverUrl,
-                          height: 112,
-                          width: 80,
-                          fit: BoxFit.cover,
-                        ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 112,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Image.network(
+                              book.coverUrl,
+                              height: 112,
+                              width: 80,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 1),
+                                  child: Text(
+                                    book.title,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 1),
+                                  child: Text(
+                                    book.authors.join(', '),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                RatingBar(
+                                  initialRating: book.rating,
+                                  allowHalfRating: true,
+                                  ignoreGestures: true,
+                                  itemCount: 5,
+                                  itemSize: 16,
+                                  onRatingUpdate: (_) {},
+                                  ratingWidget: RatingWidget(
+                                    full: const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    half: const Icon(
+                                      Icons.star_half,
+                                      color: Colors.amber,
+                                    ),
+                                    empty: const Icon(
+                                      Icons.star_border,
+                                      color: Colors.amber,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 100),
+                          Icon(Icons.arrow_forward_ios)
+                        ],
                       ),
-                      const SizedBox(width: 16),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 1),
-                              child: Text(
-                                book.title,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 1),
-                              child: Text(
-                                book.authors.join(', '),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            RatingBar(
-                              initialRating: book.rating,
-                              allowHalfRating: true,
-                              ignoreGestures: true,
-                              itemCount: 5,
-                              itemSize: 16,
-                              onRatingUpdate: (_) {},
-                              ratingWidget: RatingWidget(
-                                full: const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                half: const Icon(
-                                  Icons.star_half,
-                                  color: Colors.amber,
-                                ),
-                                empty: const Icon(
-                                  Icons.star_border,
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               );

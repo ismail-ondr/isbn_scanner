@@ -190,7 +190,7 @@ class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
             ),
           ),
           child: Text(
-            'Search on Amazon',
+            'Amazonda Ara',
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.w500,
