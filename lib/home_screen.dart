@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_library/profile_screen.dart';
 import 'package:my_library/to_read_screen.dart';
 import 'library_screen.dart';
 
@@ -14,9 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> pages = [
     ToReadScreen(),
     LibraryScreen(),
-    Center(
-      child: Text("Profil"),
-    ),
+    ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {
