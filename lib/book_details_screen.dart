@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_library/book/book.dart';
 import 'package:my_library/providers/book_provider.dart';
 import 'package:my_library/providers/saved_books_provider.dart';
+import 'package:my_library/providers/saved_library_books_provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookDetailsScreen extends ConsumerStatefulWidget {
   final String isbn;
-
-  const BookDetailsScreen({
-    Key? key,
-    required this.isbn,
-  }) : super(key: key);
+  final int page;
+  const BookDetailsScreen({Key? key, required this.isbn, required this.page})
+      : super(key: key);
 
   @override
   _BookDetailsScreenState createState() => _BookDetailsScreenState();
@@ -24,13 +24,24 @@ class BookDetailsScreen extends ConsumerStatefulWidget {
 class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
   @override
   void initState() {
-    final asyncBook = ref.read(bookProvider(widget.isbn));
+    if (widget.page == 0) {
+      final asyncBook = ref.read(bookProvider(widget.isbn));
 
-    asyncBook.whenOrNull(
-      error: (error, stack) => ref.refresh(bookProvider(widget.isbn)),
-    );
+      asyncBook.whenOrNull(
+        error: (error, stack) => ref.refresh(bookProvider(widget.isbn)),
+      );
 
-    super.initState();
+      super.initState();
+    }
+    if (widget.page == 1) {
+      final asyncBook = ref.read(libraryBookProvider(widget.isbn));
+
+      asyncBook.whenOrNull(
+        error: (error, stack) => ref.refresh(libraryBookProvider(widget.isbn)),
+      );
+
+      super.initState();
+    }
   }
 
   String get _amazonSearchUrl {
@@ -42,29 +53,53 @@ class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
   }
 
   void _handleSave() async {
-    final notifier = ref.read(savedBooksProvider.notifier);
-    final book = ref.read(bookProvider(widget.isbn)).value!;
-    await notifier.toggleSavedBook(book);
+    if (widget.page == 0) {
+      final notifier = ref.read(savedBooksProvider.notifier);
+      final book = ref.read(bookProvider(widget.isbn)).value!;
+      await notifier.toggleSavedBook(book);
 
-    final savedBooks = ref.read(savedBooksProvider);
-    final isSaved = savedBooks.any((book) => book.isbn == widget.isbn);
+      final savedBooks = ref.read(savedBooksProvider);
+      final isSaved = savedBooks.any((book) => book.isbn == widget.isbn);
 
-    final message = isSaved
-        ? 'Book added to your saved books'
-        : 'Book removed from your saved books';
+      final message = isSaved ? 'Kitap kaydedildi' : 'Kitap silindi';
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-        content: Text(
-          message,
-          style: GoogleFonts.poppins(fontSize: 14),
-        ),
-      ));
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text(
+            message,
+            style: GoogleFonts.poppins(fontSize: 14),
+          ),
+        ));
+    }
+    if (widget.page == 1) {
+      final notifier = ref.read(savedLibraryBooksProvider.notifier);
+      final book = ref.read(libraryBookProvider(widget.isbn)).value!;
+      await notifier.toggleSavedBook(book);
+
+      final savedBooks = ref.read(savedLibraryBooksProvider);
+      final isSaved = savedBooks.any((book) => book.isbn == widget.isbn);
+
+      final message = isSaved ? 'Kitap kaydedildi' : 'Kitap silindi';
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text(
+            message,
+            style: GoogleFonts.poppins(fontSize: 14),
+          ),
+        ));
+    }
   }
 
   void _handleShare() async {
-    final book = ref.read(bookProvider(widget.isbn)).value!;
+    IBook book;
+    if (widget.page == 0) {
+      book = ref.read(bookProvider(widget.isbn)).value!;
+    } else {
+      book = ref.read(libraryBookProvider(widget.isbn)).value!;
+    }
 
     final title = book.title;
     final authors = book.authors.join(', ');
@@ -76,11 +111,21 @@ class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
   }
 
   void _handleRefresh() {
-    ref.refresh(bookProvider(widget.isbn));
+    if (widget.page == 0) {
+      ref.refresh(bookProvider(widget.isbn));
+    }
+    if (widget.page == 1) {
+      ref.refresh(libraryBookProvider(widget.isbn));
+    }
   }
 
   Widget _buildBookDetails() {
-    final book = ref.read(bookProvider(widget.isbn)).value!;
+    IBook book;
+    if (widget.page == 0) {
+      book = ref.read(bookProvider(widget.isbn)).value!;
+    } else {
+      book = ref.read(libraryBookProvider(widget.isbn)).value!;
+    }
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -251,12 +296,18 @@ class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final asyncBook = ref.watch(bookProvider(widget.isbn));
-    final isBookLoaded = asyncBook.asData != null;
+    AsyncValue<IBook> asyncBook = ref.watch(bookProvider(widget.isbn));
+    bool isBookLoaded = asyncBook.asData != null;
 
-    final savedBooks = ref.watch(savedBooksProvider);
-    final isSaved = savedBooks.any((book) => book.isbn == widget.isbn);
+    List<IBook> savedBooks = ref.watch(savedBooksProvider);
+    bool isSaved = savedBooks.any((book) => book.isbn == widget.isbn);
+    if (widget.page == 1) {
+      asyncBook = ref.watch(libraryBookProvider(widget.isbn));
+      isBookLoaded = asyncBook.asData != null;
 
+      savedBooks = ref.watch(savedLibraryBooksProvider);
+      isSaved = savedBooks.any((book) => book.isbn == widget.isbn);
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

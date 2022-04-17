@@ -23,6 +23,10 @@ class Book implements IBook {
     required this.coverUrl,
   });
 
+  set isbn(String isbn) {
+    this.isbn = isbn;
+  }
+
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
       isbn: json['isbn'] as String,

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_library/providers/saved_books_provider.dart';
 import 'book/book_types.dart';
 import 'book_details_screen.dart';
+import 'add_book_screen.dart';
 
 class ToReadScreen extends ConsumerWidget {
   const ToReadScreen({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class ToReadScreen extends ConsumerWidget {
       MaterialPageRoute(
         builder: (context) => BookDetailsScreen(
           isbn: barcode,
+          page: 0,
         ),
       ),
     );
@@ -32,6 +34,7 @@ class ToReadScreen extends ConsumerWidget {
       MaterialPageRoute(
         builder: (context) => const BookDetailsScreen(
           isbn: '8525056006',
+          page: 0,
         ),
       ),
     );
@@ -108,6 +111,7 @@ class ToReadScreen extends ConsumerWidget {
                     MaterialPageRoute(
                       builder: (context) => BookDetailsScreen(
                         isbn: book.isbn,
+                        page: 0,
                       ),
                     ),
                   ),
@@ -195,6 +199,39 @@ class ToReadScreen extends ConsumerWidget {
             },
           ),
         ),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                  ),
+                  onPressed: () => _scan(context),
+                  child: Text('Barkod Oku'),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => AddBookScreen(
+                              page: 0,
+                            )),
+                  ),
+                  child: Text('Manuel Ekle'),
+                ),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
