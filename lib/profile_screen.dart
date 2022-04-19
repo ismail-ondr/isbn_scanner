@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              bookCount![0].toString(),
+                              bookCount[0].toString(),
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),
                             ),
