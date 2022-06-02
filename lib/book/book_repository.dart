@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:html/parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,30 +13,69 @@ class BookRepository implements IBookRepository {
   final _http = Dio(
     BaseOptions(baseUrl: 'https://www.goodreads.com'),
   );
+  //final user = FirebaseAuth.instance.currentUser!.uid;
 
   @override
-  Future<IBook> getBookByIsbn(String isbn) async {
-    ///
-    final preferences = await SharedPreferences.getInstance();
+  Future<void> saveBookFirebase(IBook book) async {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final docUser = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("toReadBooks")
+        .doc(book.isbn);
+    // final docUser =
+    //     FirebaseFirestore.instance.collection("toReadBooks").doc(book.isbn);
+    final json = book.toJson();
+    await docUser.set(json);
+  }
 
-    final savedBooks = preferences.getStringList('savedBooks') ?? [];
-    final isbns = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .map((e) => e.isbn)
-        .toList();
-    final bookList = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .where((element) => element.isbn == isbn)
-        .toList();
+  @override
+  Stream<List<IBook>> getSavedBooksFirebase() {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final a = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("toReadBooks")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Book.fromJson(doc.data())).toList());
+    return a;
+  }
+  // Stream<List<IBook>> getSavedBooksFirebase() => FirebaseFirestore.instance
+  //     .collection("toReadBooks")
+  //     .snapshots()
+  //     .map((snapshot) =>
+  //         snapshot.docs.map((doc) => Book.fromJson(doc.data())).toList());
 
-    if (isbns.contains(isbn)) {
+  @override
+  Future<IBook> getBookByIsbnFirebase(String isbn) async {
+    // final findedBook = FirebaseFirestore.instance
+    //     .collection("toReadBooks")
+    //     .snapshots()
+    //     .map((snapshot) => snapshot.docs
+    //         .where((element) => element["isbn"] == isbn)
+    //         .map((e) => Book.fromJson(e.data()))
+    //         .toList());
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final findedBook = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("toReadBooks")
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .where((element) => element["isbn"] == isbn)
+            .map((e) => Book.fromJson(e.data()))
+            .toList());
+
+    final a = await findedBook.first;
+    if (!a.isEmpty) {
       return Book(
         isbn: isbn,
-        title: bookList[0].title,
-        authors: bookList[0].authors,
-        rating: bookList[0].rating,
-        description: bookList[0].description,
-        coverUrl: bookList[0].coverUrl,
+        title: a[0].title,
+        authors: a[0].authors,
+        rating: a[0].rating,
+        description: a[0].description,
+        coverUrl: a[0].coverUrl,
       );
     }
 
@@ -79,139 +120,60 @@ class BookRepository implements IBookRepository {
   }
 
   @override
-  Future<void> saveBook(IBook book) async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedBooks') ?? [];
-    final isbns = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .map((e) => e.isbn)
-        .toList();
-
-    if (!isbns.contains(book.isbn)) {
-      final json = jsonEncode(book.toJson());
-      savedBooks.add(json);
-      preferences.setStringList('savedBooks', savedBooks);
-    }
+  Future<void> removeBookFirebase(IBook book) async {
+    // final docUser =
+    //     FirebaseFirestore.instance.collection("toReadBooks").doc(book.isbn);
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final docUser = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("toReadBooks")
+        .doc(book.isbn);
+    docUser.delete();
   }
 
   @override
-  Future<void> removeBook(IBook book) async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedBooks') ?? [];
-    final isbns = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .map((e) => e.isbn)
-        .toList();
-
-    if (isbns.contains(book.isbn)) {
-      final json = jsonEncode(book.toJson());
-      savedBooks.remove(json);
-      preferences.setStringList('savedBooks', savedBooks);
-    }
+  Future<void> saveLibraryBookFirebase(IBook book) async {
+    // final docUser =
+    //     FirebaseFirestore.instance.collection("libraryBooks2").doc(book.isbn);
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final docUser = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("libraryBooks2")
+        .doc(book.isbn);
+    final json = book.toJson();
+    await docUser.set(json);
   }
 
   @override
-  Future<void> updateBook(String isbn, IBook book) async {
-    final preferences = await SharedPreferences.getInstance();
-    final savedBooks = preferences.getStringList('savedBooks') ?? [];
-
-    final newSavedBooks = savedBooks.map((savedBookJson) {
-      final savedBook = Book.fromJson(json.decode(savedBookJson));
-      if (savedBook.isbn == isbn) return json.encode(book.toJson());
-      return savedBookJson;
-    }).toList();
-
-    preferences.setStringList('savedBooks', newSavedBooks);
-  }
-
-  @override
-  Future<List<Book>> getSavedBooks() async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedBooks') ?? [];
-    return savedBooks.map((e) => Book.fromJson(json.decode(e))).toList();
-  }
-
-  @override
-  Future<List<IBook>> getSavedLibraryBooks() async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedLibraryBooks') ?? [];
-    return savedBooks.map((e) => Book.fromJson(json.decode(e))).toList();
-  }
-
-  @override
-  Future<void> removeLibraryBook(IBook book) async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedLibraryBooks') ?? [];
-    final isbns = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .map((e) => e.isbn)
-        .toList();
-
-    if (isbns.contains(book.isbn)) {
-      final json = jsonEncode(book.toJson());
-      savedBooks.remove(json);
-      preferences.setStringList('savedLibraryBooks', savedBooks);
-    }
-  }
-
-  @override
-  Future<void> saveLibraryBook(IBook book) async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedLibraryBooks') ?? [];
-    final isbns = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .map((e) => e.isbn)
-        .toList();
-
-    if (!isbns.contains(book.isbn)) {
-      final json = jsonEncode(book.toJson());
-      savedBooks.add(json);
-      preferences.setStringList('savedLibraryBooks', savedBooks);
-    }
-  }
-
-  @override
-  Future<void> updateLibraryBook(String isbn, IBook book) async {
-    final preferences = await SharedPreferences.getInstance();
-    final savedBooks = preferences.getStringList('savedLibraryBooks') ?? [];
-
-    final newSavedBooks = savedBooks.map((savedBookJson) {
-      final savedBook = Book.fromJson(json.decode(savedBookJson));
-      if (savedBook.isbn == isbn) return json.encode(book.toJson());
-      return savedBookJson;
-    }).toList();
-
-    preferences.setStringList('savedLibraryBooks', newSavedBooks);
-  }
-
-  @override
-  Future<IBook> getLibraryBookByIsbn(String isbn) async {
-    final preferences = await SharedPreferences.getInstance();
-
-    final savedBooks = preferences.getStringList('savedLibraryBooks') ?? [];
-    final isbns = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .map((e) => e.isbn)
-        .toList();
-    final bookList = savedBooks
-        .map((e) => Book.fromJson(json.decode(e)))
-        .where((element) => element.isbn == isbn)
-        .toList();
-
-    if (isbns.contains(isbn)) {
+  Future<IBook> getLibraryBookByIsbnFirebase(String isbn) async {
+    // final findedBook = FirebaseFirestore.instance
+    //     .collection("libraryBooks2")
+    //     .snapshots()
+    //     .map((snapshot) => snapshot.docs
+    //         .where((element) => element["isbn"] == isbn)
+    //         .map((e) => Book.fromJson(e.data()))
+    //         .toList());
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final findedBook = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("libraryBooks2")
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .where((element) => element["isbn"] == isbn)
+            .map((e) => Book.fromJson(e.data()))
+            .toList());
+    final a = await findedBook.first;
+    if (!a.isEmpty) {
       return Book(
         isbn: isbn,
-        title: bookList[0].title,
-        authors: bookList[0].authors,
-        rating: bookList[0].rating,
-        description: bookList[0].description,
-        coverUrl: bookList[0].coverUrl,
+        title: a[0].title,
+        authors: a[0].authors,
+        rating: a[0].rating,
+        description: a[0].description,
+        coverUrl: a[0].coverUrl,
       );
     }
 
@@ -246,12 +208,41 @@ class BookRepository implements IBookRepository {
     }
 
     return Book(
-      isbn: isbn,
-      title: title,
-      authors: authors,
-      rating: rating,
-      description: description,
-      coverUrl: coverUrl,
-    );
+        isbn: isbn,
+        title: title,
+        authors: authors,
+        rating: rating,
+        description: description,
+        coverUrl: coverUrl);
+  }
+
+  @override
+  // Stream<List<IBook>> getSavedLibraryBooksFirebase() =>
+  //     FirebaseFirestore.instance.collection("libraryBooks2").snapshots().map(
+  //         (snapshot) =>
+  //             snapshot.docs.map((doc) => Book.fromJson(doc.data())).toList());
+  Stream<List<IBook>> getSavedLibraryBooksFirebase() {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final a = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("libraryBooks2")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Book.fromJson(doc.data())).toList());
+    return a;
+  }
+
+  @override
+  Future<void> removeLibraryBookFirebase(IBook book) async {
+    // final docUser =
+    //     FirebaseFirestore.instance.collection("libraryBooks2").doc(book.isbn);
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final docUser = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("libraryBooks2")
+        .doc(book.isbn);
+    docUser.delete();
   }
 }

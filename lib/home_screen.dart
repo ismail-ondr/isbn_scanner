@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_library/countdown_screen.dart';
 import 'package:my_library/profile_screen.dart';
 import 'package:my_library/to_read_screen.dart';
 import 'library_screen.dart';
@@ -15,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> pages = [
     ToReadScreen(),
     LibraryScreen(),
+    CountDownTimer(),
     ProfileScreen(),
   ];
   @override
@@ -22,10 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark), label: "Okunacak Kitaplar"),
+              icon: Icon(Icons.bookmark), label: "Okunacak"),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: "Kütüphane"),
+          BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Sayaç"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil"),
         ],
         currentIndex: _selectedIndex,

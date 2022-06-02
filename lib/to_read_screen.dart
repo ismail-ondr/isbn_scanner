@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_library/providers/saved_books_provider.dart';
+import 'book/book_model.dart';
 import 'book/book_types.dart';
 import 'book_details_screen.dart';
 import 'add_book_screen.dart';
@@ -40,6 +43,20 @@ class ToReadScreen extends ConsumerWidget {
     );
   }
 
+  Future<List<IBook>> getSavedBooks() async {
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final a = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user)
+        .collection("toReadBooks")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Book.fromJson(doc.data())).toList())
+        .first;
+
+    return a;
+  }
+
   Widget _buildEmptyList(BuildContext context) {
     return Container(
       alignment: Alignment.center,
@@ -47,10 +64,10 @@ class ToReadScreen extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/reading.png', height: 240),
-          const SizedBox(height: 8),
+          //Image.asset('assets/images/reading.png', height: 240),
+          const SizedBox(height: 270),
           Text(
-            'No books saved yet.',
+            'Henüz kitap kaydedilmedi',
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,
@@ -58,31 +75,41 @@ class ToReadScreen extends ConsumerWidget {
               color: Colors.black,
             ),
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: 120,
-            child: ElevatedButton(
-              onPressed: () => _scan(context),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                    ),
+                    onPressed: () => _scan(context),
+                    child: Text('Barkod Oku'),
+                  ),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.camera_alt_outlined, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Scan',
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                    ),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => AddBookScreen(
+                                page: 0,
+                              )),
+                    ),
+                    child: Text('Manuel Ekle'),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            ],
+          )
         ],
       ),
     );
@@ -239,6 +266,7 @@ class ToReadScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final savedBooks = ref.watch(savedBooksProvider);
+    //final savedBooks = getSavedBooks();
 
     return Scaffold(
       appBar: AppBar(
@@ -262,9 +290,18 @@ class ToReadScreen extends ConsumerWidget {
           const SizedBox(width: 8),
         ],
       ),
-      body: savedBooks.isEmpty
-          ? _buildEmptyList(context)
-          : _buildList(context, savedBooks),
+      body: FutureBuilder(
+        future: getSavedBooks(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data.isEmpty
+                ? _buildEmptyList(context)
+                : _buildList(context, snapshot.data);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 }

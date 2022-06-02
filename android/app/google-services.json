@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1098025613240",
+    "project_id": "isbnscanner-26c62",
+    "storage_bucket": "isbnscanner-26c62.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098025613240:android:06ad4907b7672c11a1414d",
+        "android_client_info": {
+          "package_name": "com.example.my_library"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098025613240-csbqk12c1f4oj97fjmk41fiv0lqct27a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEiBC0aHN_ySbanak4PIuF6fo4JUDTo_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098025613240-csbqk12c1f4oj97fjmk41fiv0lqct27a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

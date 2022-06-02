@@ -7,9 +7,10 @@ import 'saved_books_provider.dart';
 
 final bookProvider = FutureProvider.family<IBook, String>((ref, isbn) {
   final repository = ref.watch(bookRepositoryProvider);
-  final asyncBook = repository.getBookByIsbn(isbn);
+  //final asyncBook = repository.getBookByIsbn(isbn);
+  final deneme = repository.getBookByIsbnFirebase(isbn);
 
-  return asyncBook.then((book) async {
+  return deneme.then((book) async {
     final savedBooksNotifier = ref.read(savedBooksProvider.notifier);
     await savedBooksNotifier.updateSavedBook(isbn, book);
     return book;
@@ -18,9 +19,10 @@ final bookProvider = FutureProvider.family<IBook, String>((ref, isbn) {
 
 final libraryBookProvider = FutureProvider.family<IBook, String>((ref, isbn) {
   final repository = ref.watch(bookRepositoryProvider);
-  final asyncBook = repository.getLibraryBookByIsbn(isbn);
+  //final asyncBook = repository.getLibraryBookByIsbn(isbn);
+  final deneme = repository.getLibraryBookByIsbnFirebase(isbn);
 
-  return asyncBook.then((book) async {
+  return deneme.then((book) async {
     final savedBooksNotifier = ref.read(savedLibraryBooksProvider.notifier);
     await savedBooksNotifier.updateSavedBook(isbn, book);
     return book;

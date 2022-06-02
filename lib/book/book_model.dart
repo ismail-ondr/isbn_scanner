@@ -46,7 +46,7 @@ class Book implements IBook {
       'authors': authors,
       'rating': rating,
       'description': description,
-      'coverUrl': coverUrl,
+      'coverUrl': coverUrl
     };
   }
 

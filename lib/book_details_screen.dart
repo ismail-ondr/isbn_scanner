@@ -256,7 +256,7 @@ class _BookDetailsScreenState extends ConsumerState<BookDetailsScreen> {
           Image.asset('assets/images/clumsy.png', height: 240),
           const SizedBox(height: 24),
           Text(
-            'Oops! Something went wrong.',
+            'Kitap bulunamadı.',
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,

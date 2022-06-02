@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">1098025613240-csbqk12c1f4oj97fjmk41fiv0lqct27a.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">1098025613240</string>
+    <string name="google_api_key" translatable="false">AIzaSyDEiBC0aHN_ySbanak4PIuF6fo4JUDTo_Q</string>
+    <string name="google_app_id" translatable="false">1:1098025613240:android:06ad4907b7672c11a1414d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDEiBC0aHN_ySbanak4PIuF6fo4JUDTo_Q</string>
+    <string name="google_storage_bucket" translatable="false">isbnscanner-26c62.appspot.com</string>
+    <string name="project_id" translatable="false">isbnscanner-26c62</string>
+</resources>

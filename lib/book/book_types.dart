@@ -5,20 +5,17 @@ abstract class IBook {
   double get rating;
   String get description;
   String get coverUrl;
-
   Map<String, dynamic> toJson();
 }
 
 abstract class IBookRepository {
-  Future<IBook> getBookByIsbn(String isbn);
-  Future<void> saveBook(IBook book);
-  Future<void> removeBook(IBook book);
-  Future<void> updateBook(String isbn, IBook book);
-  Future<List<IBook>> getSavedBooks();
+  Future<IBook> getBookByIsbnFirebase(String isbn);
+  Future<void> saveBookFirebase(IBook book);
+  Future<void> removeBookFirebase(IBook book);
+  Stream<List<IBook>> getSavedBooksFirebase();
 
-  Future<IBook> getLibraryBookByIsbn(String isbn);
-  Future<void> saveLibraryBook(IBook book);
-  Future<void> removeLibraryBook(IBook book);
-  Future<void> updateLibraryBook(String isbn, IBook book);
-  Future<List<IBook>> getSavedLibraryBooks();
+  Future<IBook> getLibraryBookByIsbnFirebase(String isbn);
+  Future<void> saveLibraryBookFirebase(IBook book);
+  Future<void> removeLibraryBookFirebase(IBook book);
+  Stream<List<IBook>> getSavedLibraryBooksFirebase();
 }

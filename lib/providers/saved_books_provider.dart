@@ -11,16 +11,21 @@ class SavedBooksNotifier extends StateNotifier<List<IBook>> {
   }
 
   Future<void> loadSavedBooks() async {
-    state = await bookRepository.getSavedBooks();
+    //state = await bookRepository.getSavedBooks();
+    //state = await bookRepository.getSavedBooksFirebase().last;
+    state = await bookRepository.getSavedBooksFirebase().first;
+    int A = 9;
   }
 
   Future<void> toggleSavedBook(IBook book) async {
     final isBookmarked = state.any((bookmark) => bookmark.isbn == book.isbn);
 
     if (isBookmarked) {
-      await bookRepository.removeBook(book);
+      //await bookRepository.removeBook(book);
+      await bookRepository.removeBookFirebase(book);
     } else {
-      await bookRepository.saveBook(book);
+      //await bookRepository.saveBook(book);
+      await bookRepository.saveBookFirebase(book);
     }
 
     await loadSavedBooks();
@@ -28,7 +33,7 @@ class SavedBooksNotifier extends StateNotifier<List<IBook>> {
 
   Future<void> updateSavedBook(String isbn, IBook book) async {
     print('$isbn: ${book.rating}');
-    await bookRepository.updateBook(isbn, book);
+    //await bookRepository.updateBook(isbn, book);
     await loadSavedBooks();
   }
 }
