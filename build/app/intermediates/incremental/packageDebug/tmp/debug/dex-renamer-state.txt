@@ -1,4 +1,4 @@
-#Thu Jun 02 11:37:43 EET 2022
+#Sat Jun 04 13:38:44 EET 2022
 base.2=C\:\\Users\\onder\\Documents\\GitHub\\isbn_scanner\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
 base.1=C\:\\Users\\onder\\Documents\\GitHub\\isbn_scanner\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
 base.0=C\:\\Users\\onder\\Documents\\GitHub\\isbn_scanner\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
